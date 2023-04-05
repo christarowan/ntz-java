@@ -12,7 +12,7 @@ public final class Notez {
     }
     /**
      * Says hello to the world.
-     * 
+     *
      * @param args The arguments of the program.
      */
     public static void main(String argv[]) {
@@ -32,12 +32,12 @@ public final class Notez {
 
         /*
          * You will spend a lot of time right here.
-         * 
+         *
          * instead of loadDemoEntries, you will implement a series
          * of method calls that manipulate the Notez engine.
          * See the first one:
          */
-        ntzEngine.loadDemoEntries();
+      //  ntzEngine.loadDemoEntries();
 
         ntzEngine.saveDatabase();
 
@@ -46,9 +46,14 @@ public final class Notez {
             ntzEngine.printResults();
         } else {
             if (argv[0].equals("-r")) {
+                System.out.println("-r ran");
                 ntzEngine.addToCategory("General", argv);
-            } // this should give you an idea about how to TEST the Notez engine
-              // without having to spend lots of time messing with command line arguments.
+            } else if (argv[0].equals("-c")) {
+                ntzEngine.addToCategory(argv[1],argv);
+                // this should give you an idea about how to TEST the Notez engine
+                // without having to spend lots of time messing with command line arguments.
+            }
+            ntzEngine.saveDatabase();
         }
         /*
          * what other method calls do you need here to implement the other commands??
@@ -56,10 +61,16 @@ public final class Notez {
 
     }
 
-    private void addToCategory(String string, String[] argv) {
-    }
+    private void addToCategory(String category, String[] argv) {
 
+        if (filemap.containsKey(category)) {
+            filemap.get(category).add(argv[argv.length - 1]);
+        } else {
+            filemap.put(category, new NoteList(argv[argv.length - 1]));
+        }
+    }
     private void saveDatabase() {
+
         filemap.save();
     }
 
@@ -71,12 +82,12 @@ public final class Notez {
         System.out.println(this.filemap.toString());
     }
 
-    public void loadDemoEntries() {
-        filemap.put("General", new NoteList("The Very first Note"));
-        filemap.put("note2", new NoteList("A secret second note"));
-        filemap.put("category3", new NoteList("Did you buy bread AND eggs?"));
-        filemap.put("anotherNote", new NoteList("Hello from ZipCode!"));
-    }
+   // public void loadDemoEntries() {
+   //     filemap.put("General", new NoteList("The Very first Note"));
+   //     filemap.put("note2", new NoteList("A secret second note"));
+    //    filemap.put("category3", new NoteList("Did you buy bread AND eggs?"));
+     //   filemap.put("anotherNote", new NoteList("Hello from ZipCode!"));
+   // }
     /*
      * Put all your additional methods that implement commands like forget here...
      */
